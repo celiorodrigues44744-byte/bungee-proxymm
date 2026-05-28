@@ -1,10 +1,16 @@
-FROM ghcr.io/viaversion/viaproxy:latest
-USER root
-RUN mkdir -p /app/run/plugins && \
-    wget -O /app/run/plugins/Geyser-ViaProxy.jar \
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+RUN apt-get update && apt-get install -y wget
+
+RUN wget -O ViaProxy.jar https://github.com/ViaVersion/ViaProxy/releases/download/v3.4.12-SNAPSHOT/ViaProxy.jar || \
+    wget -O ViaProxy.jar https://ci.viaversion.com/job/ViaProxy/lastSuccessfulBuild/artifact/build/libs/ViaProxy-3.4.12-SNAPSHOT.jar || \
+    wget --no-check-certificate -O ViaProxy.jar "https://github.com/ViaVersion/ViaProxy/releases/latest/download/ViaProxy.jar"
+
+RUN mkdir -p plugins && \
+    wget -O plugins/Geyser-ViaProxy.jar \
     https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/viaproxy
 
-RUN cat > /app/run/viaproxy.yml << 'EOF'
+RUN cat > viaproxy.yml << 'EOF'
 bind_address: 0.0.0.0
 bind_port: 25568
 target_address: 15.235.212.121
@@ -17,4 +23,4 @@ EOF
 EXPOSE 19132/udp
 EXPOSE 25568
 
-CMD ["sh", "-c", "find / -name 'ViaProxy*.jar' 2>/dev/null && java -Xms256M -Xmx460M -jar $(find / -name 'ViaProxy*.jar' 2>/dev/null | head -1) config /app/run/viaproxy.yml"]
+CMD ["java", "-Xms256M", "-Xmx460M", "-jar", "ViaProxy.jar", "config", "viaproxy.yml"]
