@@ -17,4 +17,4 @@ EOF
 EXPOSE 19132/udp
 EXPOSE 25568
 
-CMD ["java", "-Xms256M", "-Xmx460M", "-jar", "/app/ViaProxy.jar", "config", "/app/run/viaproxy.yml"]
+CMD ["sh", "-c", "find / -name 'ViaProxy*.jar' 2>/dev/null && java -Xms256M -Xmx460M -jar $(find / -name 'ViaProxy*.jar' 2>/dev/null | head -1) config /app/run/viaproxy.yml"]
