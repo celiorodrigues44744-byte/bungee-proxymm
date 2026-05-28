@@ -16,3 +16,5 @@ EOF
 
 EXPOSE 19132/udp
 EXPOSE 25568
+
+CMD ["java", "-Xms256M", "-Xmx460M", "-jar", "/app/ViaProxy.jar", "nogui"]
