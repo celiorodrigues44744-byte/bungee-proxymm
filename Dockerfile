@@ -14,7 +14,7 @@ RUN cat > viaproxy.yml << 'EOF'
 bind_address: 0.0.0.0
 bind_port: 25568
 target_address: 15.235.212.121
-target_port: 11795
+target_port: 14758
 target_version: "1.21"
 proxy_online_mode: false
 auth_method: none
